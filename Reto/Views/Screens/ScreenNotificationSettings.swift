@@ -20,8 +20,24 @@ struct ScreenNotificationSettings: View {
                     .foregroundColor(Color(red: 4/255, green: 9/255, blue: 69/255))
                     .frame(maxWidth: .infinity, alignment: .center)
 
-                sectionToggle(icon: "bell", text: "Pausar todas", isOn: $nsc.isPaused)
-                sectionToggle(icon: "bell", text: "Activar todas", isOn: $nsc.isActivated)
+                // Usamos métodos seguros para cambiar el estado
+                sectionToggle(
+                    icon: "bell",
+                    text: "Pausar todas",
+                    isOn: Binding(
+                        get: { nsc.isPaused },
+                        set: { nsc.setPaused($0) }
+                    )
+                )
+
+                sectionToggle(
+                    icon: "bell",
+                    text: "Activar todas",
+                    isOn: Binding(
+                        get: { nsc.isActivated },
+                        set: { nsc.setActivated($0) }
+                    )
+                )
 
                 Text("Reacciones")
                     .font(.title2)
@@ -29,7 +45,17 @@ struct ScreenNotificationSettings: View {
                     .foregroundColor(Color(red: 4/255, green: 9/255, blue: 69/255))
                     .padding(.horizontal)
 
-                sectionToggle(icon: "bell", text: "Notificarme reacciones", isOn: $nsc.isReactionsEnabled)
+                sectionToggle(
+                    icon: "bell",
+                    text: "Notificarme reacciones",
+                    isOn: Binding(
+                        get: { nsc.isReactionsEnabled },
+                        set: {
+                            nsc.isReactionsEnabled = $0
+                            nsc.updateStatesFromIndividualToggles()
+                        }
+                    )
+                )
 
                 Text("Procesos de revisión")
                     .font(.title2)
@@ -37,7 +63,17 @@ struct ScreenNotificationSettings: View {
                     .foregroundColor(Color(red: 4/255, green: 9/255, blue: 69/255))
                     .padding(.horizontal)
 
-                sectionToggle(icon: "bell", text: "Notificarme procesos", isOn: $nsc.isReviewEnabled)
+                sectionToggle(
+                    icon: "bell",
+                    text: "Notificarme procesos",
+                    isOn: Binding(
+                        get: { nsc.isReviewEnabled },
+                        set: {
+                            nsc.isReviewEnabled = $0
+                            nsc.updateStatesFromIndividualToggles()
+                        }
+                    )
+                )
 
                 Text("Reportes recomendados")
                     .font(.title2)
@@ -45,7 +81,17 @@ struct ScreenNotificationSettings: View {
                     .foregroundColor(Color(red: 4/255, green: 9/255, blue: 69/255))
                     .padding(.horizontal)
 
-                sectionToggle(icon: "bell", text: "Notificarme reportes", isOn: $nsc.isReportsEnabled)
+                sectionToggle(
+                    icon: "bell",
+                    text: "Notificarme reportes",
+                    isOn: Binding(
+                        get: { nsc.isReportsEnabled },
+                        set: {
+                            nsc.isReportsEnabled = $0
+                            nsc.updateStatesFromIndividualToggles()
+                        }
+                    )
+                )
             }
             .padding()
         }

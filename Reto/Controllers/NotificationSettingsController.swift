@@ -4,46 +4,37 @@
 //
 //  Created by Ana Martinez on 16/09/25.
 //
-
 import Foundation
-import SwiftUI
 
 class NotificationSettingsController: ObservableObject {
-    @Published var isPaused: Bool = false {
-        didSet {
-            if isPaused {
-                isReactionsEnabled = false
-                isReviewEnabled = false
-                isReportsEnabled = false
-                isActivated = false
-            }
+    // Establecer de la bd
+    @Published var isPaused: Bool = false
+    @Published var isActivated: Bool = true
+    @Published var isReactionsEnabled: Bool = true
+    @Published var isReviewEnabled: Bool = true
+    @Published var isReportsEnabled: Bool = true
+
+    func setPaused(_ value: Bool) {
+        isPaused = value
+        if value {
+            isReactionsEnabled = false
+            isReviewEnabled = false
+            isReportsEnabled = false
+            isActivated = false
         }
     }
 
-    @Published var isActivated: Bool = true {
-        didSet {
-            if isActivated {
-                isReactionsEnabled = true
-                isReviewEnabled = true
-                isReportsEnabled = true
-                isPaused = false
-            }
+    func setActivated(_ value: Bool) {
+        isActivated = value
+        if value {
+            isReactionsEnabled = true
+            isReviewEnabled = true
+            isReportsEnabled = true
+            isPaused = false
         }
     }
 
-    @Published var isReactionsEnabled: Bool = true {
-        didSet { updateStates() }
-    }
-
-    @Published var isReviewEnabled: Bool = true {
-        didSet { updateStates() }
-    }
-
-    @Published var isReportsEnabled: Bool = true {
-        didSet { updateStates() }
-    }
-
-    private func updateStates() {
+    func updateStatesFromIndividualToggles() {
         let allOn = isReactionsEnabled && isReviewEnabled && isReportsEnabled
         let allOff = !isReactionsEnabled && !isReviewEnabled && !isReportsEnabled
 
